@@ -76,15 +76,21 @@ const useGoogleLogin = ({
   function addScopes(newScope) {
     if (loaded) {
       const options = {
-        prompt,
-        access_type: accessType
+        prompt
       }
       const auth = window.gapi.auth2.getAuthInstance()
       const user = auth.currentUser.get()
-      user.grant({ ...options, scope: newScope }).then(
-        res => handleSigninSuccess(res, onAddScopesSuccess),
-        err => onAddScopesFailure(err)
-      )
+      if (responseType === 'code') {
+        auth.grantOfflineAccess({ ...options, scope: newScope }).then(
+          res => onAddScopesSuccess(res),
+          err => onAddScopesFailure(err)
+        )
+      } else {
+        user.grant({ ...options, scope: newScope }).then(
+          res => handleSigninSuccess(res, onAddScopesSuccess),
+          err => onAddScopesFailure(err)
+        )
+      }
     }
   }
 

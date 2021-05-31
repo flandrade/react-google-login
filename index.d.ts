@@ -160,7 +160,7 @@ export interface UseGoogleLoginResponse {
 export interface UseGoogleLoginProps {
   readonly onSuccess?: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => void,
   readonly onFailure?: (error: any) => void,
-  readonly onAddScopesSuccess?: (response: GoogleLoginResponse) => void,
+  readonly onAddScopesSuccess?: (response: GoogleLoginResponse | GoogleLoginResponseOffline) => void,
   readonly onAddScopesFailure?: (error: any) => void,
   readonly onScriptLoadFailure?: (error: any) => void,
   readonly onAutoLoadFinished?: (successLogin: boolean) => void,
