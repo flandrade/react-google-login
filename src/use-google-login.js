@@ -75,9 +75,13 @@ const useGoogleLogin = ({
 
   function addScopes(newScope) {
     if (loaded) {
+      const options = {
+        prompt,
+        access_type: accessType
+      }
       const auth = window.gapi.auth2.getAuthInstance()
       const user = auth.currentUser.get()
-      user.grant({ scope: newScope }).then(
+      user.grant({ ...options, scope: newScope }).then(
         res => handleSigninSuccess(res, onAddScopesSuccess),
         err => onAddScopesFailure(err)
       )
