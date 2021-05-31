@@ -28,7 +28,7 @@ const useGoogleLogin = ({
 }) => {
   const [loaded, setLoaded] = useState(false)
 
-  function handleSigninSuccess(res) {
+  function handleSigninSuccess(res, handleSuccess) {
     /*
       offer renamed response keys to names that match use
     */
@@ -46,7 +46,7 @@ const useGoogleLogin = ({
       givenName: basicProfile.getGivenName(),
       familyName: basicProfile.getFamilyName()
     }
-    onSuccess(res)
+    handleSuccess(res)
   }
 
   function signIn(e) {
@@ -66,7 +66,7 @@ const useGoogleLogin = ({
         )
       } else {
         GoogleAuth.signIn(options).then(
-          res => handleSigninSuccess(res),
+          res => handleSigninSuccess(res, onSuccess),
           err => onFailure(err)
         )
       }
@@ -78,7 +78,7 @@ const useGoogleLogin = ({
       const auth = window.gapi.auth2.getAuthInstance()
       const user = auth.currentUser.get()
       user.grant({ scope: newScope }).then(
-        res => onAddScopesSuccess(res),
+        res => handleSigninSuccess(res, onAddScopesSuccess),
         err => onAddScopesFailure(err)
       )
     }
@@ -120,7 +120,7 @@ const useGoogleLogin = ({
                   const signedIn = isSignedIn && res.isSignedIn.get()
                   onAutoLoadFinished(signedIn)
                   if (signedIn) {
-                    handleSigninSuccess(res.currentUser.get())
+                    handleSigninSuccess(res.currentUser.get(), onSuccess)
                   }
                 }
               },
@@ -139,7 +139,7 @@ const useGoogleLogin = ({
                 if (isSignedIn && GoogleAuth.isSignedIn.get()) {
                   setLoaded(true)
                   onAutoLoadFinished(true)
-                  handleSigninSuccess(GoogleAuth.currentUser.get())
+                  handleSigninSuccess(GoogleAuth.currentUser.get(), onSuccess)
                 } else {
                   setLoaded(true)
                   onAutoLoadFinished(false)
