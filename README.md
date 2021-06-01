@@ -270,12 +270,10 @@ request the user to authorizes only the new scopes from a consent screen.
 
 You can use `addScopes` from `useGoogleLogin` hook to request additional scopes
 with `cliendId`, `onAddScopesSuccess`, and `onAddScopesFailure` as shown in the
-example.
+example. If you want to grant offline access to the new scopes, don't forget to
+also include `responseType: 'code'` and `promp: 'consent'`.
 
-NOTE: It would only run if `signIn` or `GoogleLogin` button was used before and
-the user is logged in. For this reason, `isSignedIn` should be set to `true` in
-the first signin attempt or initialization.
-
+NOTE: `addScopes` can only be used if the user is already logged in.
 
 ```js
 import { useGoogleLogin } from 'react-google-login'
@@ -289,6 +287,7 @@ const { addScopes } = useGoogleLogin({
 
 More details about this workflow can be found in the official Google docs:
  * [Requesting additional permissions](https://developers.google.com/identity/sign-in/web/incremental-auth)
+
 
 ### onAddScopesSuccess callback
 
